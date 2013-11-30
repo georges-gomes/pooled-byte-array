@@ -4,6 +4,19 @@ pooled-byte-array
 byte[] pool - Automatically recycled by Garbage Collector
 
 
+Assumptions (for relatively big byte[])
+--------------
+- byte[] are expensive to allocate (zeroed)
+- consume young gen unnecessary => increase frequency of minor GC
+- if promoted => increase minor GC pause because of copy between gens
+
+byte[] can be reused manually but in algorithms that don't control the full reference or life cycle of the byte[], it's nice to let the garbage collector do his job and find out when the byte[] is not used anymore.
+Reusing byte[] manually, sometimes means thread-safety/lock issues or over-provisionning.
+
+This experimental approach try to cover these problems.
+
+
+
 Usage
 -----
 
@@ -21,9 +34,9 @@ PooledByteArrayFactory factory = new PooledByteArrayFactory(1024, 100);
 PooledByteArray buffer = factory.getByteArray();
 ```
 
-You don't need to manualy recycle the PoolByteArray object back into the pool.
+**You don't need to manualy recycle the PoolByteArray object back into the pool.
 The wrapped byte[] in PooledByteArray will be recycled in the factory automatically
-when the Garbage Colector will reclaim the PooledByteArray.
+when the Garbage Colector will reclaim the PooledByteArray.**
 
 You can then use the PooledByteArray for all sort of operation:
 
@@ -47,6 +60,8 @@ To be enriched...
 
 Careful Notes
 -------------
+
+* PooledByteArray are not zeroed like new allocated byte[]
 
 * Obviously you need to be careful with references to PooledByteArray, but it's not different than a reference to the byte[].
 
