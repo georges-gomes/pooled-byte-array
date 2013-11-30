@@ -1,7 +1,7 @@
 pooled-byte-array
 =================
 
-byte[] pool recycled automatically by Garbage Collector
+byte[] pool - Automatically recycled by Garbage Collector
 
 
 Usage
@@ -21,9 +21,9 @@ PooledByteArrayFactory factory = new PooledByteArrayFactory(1024, 100);
 PooledByteArray buffer = factory.getByteArray();
 ```
 
-+You don't need to manualy recycle the PoolByteArray object back into the pool.
+You don't need to manualy recycle the PoolByteArray object back into the pool.
 The wrapped byte[] in PooledByteArray will be recycled in the factory automatically
-when the Garbage Colector will reclaim the PooledByteArray.+
+when the Garbage Colector will reclaim the PooledByteArray.
 
 You can then use the PooledByteArray for all sort of operation:
 
@@ -41,8 +41,7 @@ public class PooledByteArray
     ...
 }
 ```
-
-To be enriched.
+To be enriched...
 
 
 
