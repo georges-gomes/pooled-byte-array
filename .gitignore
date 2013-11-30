@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 out/
 .idea/
+=======
+.idea/
+out/
+>>>>>>> 3fc12a00a3dc645b62b09d821367204341fe31e7
 *.iml
