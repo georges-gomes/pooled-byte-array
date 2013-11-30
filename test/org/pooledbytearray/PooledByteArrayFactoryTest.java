@@ -47,7 +47,7 @@ public class PooledByteArrayFactoryTest
     @Test
     public void testSingleNewByteArray() throws Exception
     {
-        PooledByteArray pba = pbaf.newByteArray();
+        PooledByteArray pba = pbaf.getByteArray();
         Assert.assertNotNull(pba);
         Assert.assertEquals(pba.length(), array_size);
     }
@@ -57,10 +57,29 @@ public class PooledByteArrayFactoryTest
     {
         for(int i=0; i<(prealloc_size+1)*2; i++)
         {
-            PooledByteArray pba = pbaf.newByteArray();
+            PooledByteArray pba = pbaf.getByteArray();
             Assert.assertNotNull(pba);
             Assert.assertEquals(pba.length(), array_size);
         }
+    }
+
+    @Test
+    public void testUsage() throws Exception
+    {
+        PooledByteArray byteArray = pbaf.getByteArray();
+
+        for(int i=0; i<byteArray.length(); i++)
+        {
+            byteArray.setAt(i, (byte)i);
+        }
+
+        for(int i=0; i<byteArray.length(); i++)
+        {
+            Assert.assertEquals(byteArray.getAt(i), (byte)i);
+        }
+
+
+
     }
 
 }

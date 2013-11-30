@@ -21,7 +21,7 @@ public class PooledByteArrayFactory
     /**
      * @return Ready to use PooledByteArray. Be careful not reset!
      */
-    public PooledByteArray newByteArray()
+    public PooledByteArray getByteArray()
     {
         if (pool.isEmpty())
         {
