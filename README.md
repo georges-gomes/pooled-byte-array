@@ -61,6 +61,11 @@ To be enriched...
 Results
 -------
 
+With options: 
+```
+-XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
+```
+
 ###Basic / standard implementation
 
 ```java
@@ -78,11 +83,10 @@ private void runBench()
 }
 ```
 
-Result for a loop of 100 000:
+
+Loop 100 000 - Buffer 4096:
 
 ```
--XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
-
 Warmup done
 
 [GC [DefNew: 52480K->0K(59008K), 0.0004690 secs] 93291K->40812K(1042048K), 0.0004860 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
@@ -99,7 +103,80 @@ Warmup done
 time = 99547us
 ```
 
-###PooledByteArray with preallocated buffers (!)
+Loop 100 000 - Buffer 32768:
+
+```
+Warm up done
+
+[GC [DefNew: 52480K->0K(59008K), 0.0019210 secs] 373289K->320809K(1042048K), 0.0019420 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0016740 secs] 373289K->320809K(1042048K), 0.0016910 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014300 secs] 373289K->320809K(1042048K), 0.0014430 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014040 secs] 373289K->320809K(1042048K), 0.0014180 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013900 secs] 373289K->320809K(1042048K), 0.0014020 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014130 secs] 373289K->320809K(1042048K), 0.0014260 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014030 secs] 373289K->320809K(1042048K), 0.0014150 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013910 secs] 373289K->320809K(1042048K), 0.0014020 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013780 secs] 373289K->320809K(1042048K), 0.0013900 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013490 secs] 373289K->320809K(1042048K), 0.0013610 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014330 secs] 373289K->320809K(1042048K), 0.0014450 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0020740 secs] 373289K->320809K(1042048K), 0.0020940 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014490 secs] 373289K->320809K(1042048K), 0.0014640 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014170 secs] 373289K->320809K(1042048K), 0.0014310 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014660 secs] 373289K->320809K(1042048K), 0.0014790 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014060 secs] 373289K->320809K(1042048K), 0.0014180 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013980 secs] 373289K->320809K(1042048K), 0.0014090 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014080 secs] 373289K->320809K(1042048K), 0.0014210 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014060 secs] 373289K->320809K(1042048K), 0.0014180 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013930 secs] 373289K->320809K(1042048K), 0.0014050 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014170 secs] 373289K->320809K(1042048K), 0.0014290 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013980 secs] 373289K->320809K(1042048K), 0.0014100 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013550 secs] 373289K->320809K(1042048K), 0.0013670 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0023210 secs] 373289K->320809K(1042048K), 0.0023480 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0018640 secs] 373289K->320809K(1042048K), 0.0018810 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015900 secs] 373289K->320809K(1042048K), 0.0016040 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014140 secs] 373289K->320809K(1042048K), 0.0014270 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014040 secs] 373289K->320809K(1042048K), 0.0014170 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014040 secs] 373289K->320809K(1042048K), 0.0014160 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013940 secs] 373289K->320809K(1042048K), 0.0014070 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013890 secs] 373289K->320809K(1042048K), 0.0014020 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014080 secs] 373289K->320809K(1042048K), 0.0014210 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014350 secs] 373289K->320809K(1042048K), 0.0014470 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014140 secs] 373289K->320809K(1042048K), 0.0014280 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013840 secs] 373289K->320809K(1042048K), 0.0013970 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0013750 secs] 373289K->320809K(1042048K), 0.0013860 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0022650 secs] 373289K->320809K(1042048K), 0.0022860 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0018530 secs] 373289K->320809K(1042048K), 0.0018690 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015650 secs] 373289K->320809K(1042048K), 0.0015780 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014760 secs] 373289K->320809K(1042048K), 0.0014920 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015000 secs] 373289K->320809K(1042048K), 0.0015160 secs] [Times: user=0.01 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014900 secs] 373289K->320809K(1042048K), 0.0015190 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014890 secs] 373289K->320809K(1042048K), 0.0015080 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015870 secs] 373289K->320809K(1042048K), 0.0016250 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015680 secs] 373289K->320809K(1042048K), 0.0015860 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014070 secs] 373289K->320809K(1042048K), 0.0014210 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014530 secs] 373289K->320809K(1042048K), 0.0014690 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0019650 secs] 373289K->320809K(1042048K), 0.0020040 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014320 secs] 373289K->320809K(1042048K), 0.0014490 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0016540 secs] 373289K->320809K(1042048K), 0.0016780 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014480 secs] 373289K->320809K(1042048K), 0.0014630 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014440 secs] 373289K->320809K(1042048K), 0.0014610 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0015030 secs] 373289K->320809K(1042048K), 0.0015280 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014530 secs] 373289K->320809K(1042048K), 0.0014720 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014560 secs] 373289K->320809K(1042048K), 0.0014760 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0017740 secs] 373289K->320809K(1042048K), 0.0018010 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014600 secs] 373289K->320809K(1042048K), 0.0014850 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014440 secs] 373289K->320809K(1042048K), 0.0014610 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0017920 secs] 373289K->320809K(1042048K), 0.0018180 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014150 secs] 373289K->320809K(1042048K), 0.0014300 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014930 secs] 373289K->320809K(1042048K), 0.0015130 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014610 secs] 373289K->320809K(1042048K), 0.0014780 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014160 secs] 373289K->320809K(1042048K), 0.0014300 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0014120 secs] 373289K->320809K(1042048K), 0.0014240 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+
+time = 365047us
+```
+
+###PooledByteArray with preallocation of 10 000 buffers
 
 ```java
 private void runBench()
@@ -116,11 +193,9 @@ private void runBench()
 }
 ```
 
-Result for a loop of 100 000:
+Loop 100 000 - Buffer 4096:
 
 ```
--XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
-
 Warm up done
 
 [GC [DefNew: 52480K->6524K(59008K), 0.0191530 secs] 93331K->65566K(1042048K), 0.0191730 secs] [Times: user=0.01 sys=0.00, real=0.02 secs] 
@@ -131,5 +206,22 @@ Warm up done
 time = 213258us
 ```
 
-Less minor GC but they are MUCH bigger! finalize() cost way too much.
 
+
+Loop 100 000 - Buffer 32768:
+
+```
+Warm up done
+
+[GC [DefNew: 52480K->6517K(59008K), 0.0223240 secs] 373329K->354931K(1042048K), 0.0223440 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58978K->6514K(59008K), 0.0224960 secs] 407393K->386689K(1042048K), 0.0225220 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58994K->6509K(59008K), 0.0207540 secs] 439169K->416746K(1042048K), 0.0207760 secs] [Times: user=0.01 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58989K->6501K(59008K), 0.0197010 secs] 469226K->445488K(1042048K), 0.0197210 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58981K->6522K(59008K), 0.0199160 secs] 497968K->472818K(1042048K), 0.0199380 secs] [Times: user=0.02 sys=0.00, real=0.02 secs] 
+[GC [DefNew: 59002K->6509K(59008K), 0.0195460 secs] 525298K->498802K(1042048K), 0.0195660 secs] [Times: user=0.01 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58989K->6525K(59008K), 0.0183120 secs] 551282K->523534K(1042048K), 0.0183310 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+
+time = 312211us
+```
+
+Less minor GCs but they are SO big!
