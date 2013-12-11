@@ -139,6 +139,14 @@ Warm up done
 time = 365047us
 ```
 
+Loop 100 000 - Buffer 65536:
+
+```
+...
+time = 1038956us
+```
+
+
 ###PooledByteArray with preallocation of 10 000 buffers
 
 ```java
@@ -187,4 +195,21 @@ Warm up done
 time = 312211us
 ```
 
-Less minor GCs but they are SO big!
+Loop 100 000 - Buffer 65536:
+
+```
+Warm up done
+
+[GC [DefNew: 52432K->6483K(59008K), 0.0202150 secs] 693261K->675608K(1042048K), 0.0202370 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58932K->6516K(59008K), 0.0225640 secs] 728057K->709057K(1042048K), 0.0225850 secs] [Times: user=0.02 sys=0.01, real=0.03 secs] 
+[GC [DefNew: 58972K->6484K(59008K), 0.0223650 secs] 761513K->741801K(1042048K), 0.0223880 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58911K->6515K(59008K), 0.0208900 secs] 794228K->773648K(1042048K), 0.0209100 secs] [Times: user=0.02 sys=0.00, real=0.02 secs] 
+[GC [DefNew: 58958K->6481K(59008K), 0.0208940 secs] 826091K->804725K(1042048K), 0.0209130 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58961K->6511K(59008K), 0.0237490 secs] 857205K->834970K(1042048K), 0.0237700 secs] [Times: user=0.01 sys=0.01, real=0.03 secs] 
+[GC [DefNew: 58991K->6475K(59008K), 0.0227720 secs] 887450K->864382K(1042048K), 0.0227930 secs] [Times: user=0.01 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 58955K->6503K(59008K), 0.0219240 secs] 916862K->893153K(1042048K), 0.0219470 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+
+time = 338505us
+```
+
+
