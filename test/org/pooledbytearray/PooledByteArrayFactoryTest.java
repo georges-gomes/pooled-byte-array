@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.pooledbytearray.finalizer.PooledByteArray;
+import org.pooledbytearray.finalizer.PooledByteArrayFactory;
 
 import java.util.Arrays;
 import java.util.Collection;

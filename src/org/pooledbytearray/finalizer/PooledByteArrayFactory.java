@@ -1,4 +1,4 @@
-package org.pooledbytearray;
+package org.pooledbytearray.finalizer;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
