@@ -58,15 +58,76 @@ To be enriched...
 
 
 
-Careful Notes
--------------
+Results
+-------
 
-* PooledByteArray are not zeroed like new allocated byte[]
+###Basic / standard implementation
 
-* Obviously you need to be careful with references to PooledByteArray, but it's not different than a reference to the byte[].
+```java
+private void runBench()
+{
+    // Allocation
+    byte[] pb = new byte[4096];
 
-* The garbage collector needs to kick-in in order to recycle byte arrays into the pool.
-So if the PooledByteArray survives the young generation, then only a FullGC or a ConcMarkSweep of the old gen is going to recyle the wrapped byte[]. I guess it works great with Azul Zing GC.
+    // Basic serialization to buffer
+    int len = serialize(object, pb);
 
+    // Consume some young
+    byte[] tmp = new byte[1024];
+    tmp[0] = 'a';
+}
+```
 
+Result for a loop of 100 000:
+
+```
+-XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
+
+Warmup done
+
+[GC [DefNew: 52480K->0K(59008K), 0.0004690 secs] 93291K->40812K(1042048K), 0.0004860 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0002950 secs] 93292K->40812K(1042048K), 0.0003090 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->4K(59008K), 0.0003010 secs] 93292K->40816K(1042048K), 0.0003150 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52484K->0K(59008K), 0.0002800 secs] 93296K->40812K(1042048K), 0.0002950 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0002820 secs] 93292K->40812K(1042048K), 0.0002960 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0003110 secs] 93292K->40812K(1042048K), 0.0003270 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0002830 secs] 93292K->40812K(1042048K), 0.0002960 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->0K(59008K), 0.0002870 secs] 93292K->40812K(1042048K), 0.0003020 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52480K->4K(59008K), 0.0002860 secs] 93292K->40816K(1042048K), 0.0002990 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC [DefNew: 52484K->0K(59008K), 0.0002770 secs] 93296K->40812K(1042048K), 0.0002890 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+
+time = 99547us
+```
+
+###PooledByteArray with preallocated buffers (!)
+
+```java
+private void runBench()
+{
+    // Allocation
+    PooledByteArray pb = factory.getByteArray();  // 4096 factory
+
+    // Basic serialization to buffer
+    int len = serialize(object, pb);
+
+    // Consume some young
+    byte[] tmp = new byte[1024];
+    tmp[0] = 'a';
+}
+```
+
+Result for a loop of 100 000:
+
+```
+Warm up done
+
+[GC [DefNew: 52480K->6524K(59008K), 0.0191530 secs] 93331K->65566K(1042048K), 0.0191730 secs] [Times: user=0.01 sys=0.00, real=0.02 secs] 
+[GC [DefNew: 59004K->6526K(59008K), 0.0191460 secs] 118046K->83820K(1042048K), 0.0191650 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
+[GC [DefNew: 59006K->6525K(59008K), 0.0136640 secs] 136300K->96609K(1042048K), 0.0136830 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+[GC [DefNew: 59005K->6527K(59008K), 0.0148630 secs] 149089K->105654K(1042048K), 0.0148930 secs] [Times: user=0.01 sys=0.01, real=0.01 secs]
+
+time = 213258us
+```
+
+Less minor GC but they are MUCH bigger! finalize() cost way too much.
 
