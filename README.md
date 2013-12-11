@@ -119,6 +119,8 @@ private void runBench()
 Result for a loop of 100 000:
 
 ```
+-XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
+
 Warm up done
 
 [GC [DefNew: 52480K->6524K(59008K), 0.0191530 secs] 93331K->65566K(1042048K), 0.0191730 secs] [Times: user=0.01 sys=0.00, real=0.02 secs] 
