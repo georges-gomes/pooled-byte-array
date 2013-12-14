@@ -66,7 +66,7 @@ With options:
 -XX:NewSize=64m -XX:MaxNewSize=64m -Xms1g -Xmx1g -XX:CompileThreshold=100 -XX:+PrintGCDetails
 ```
 
-###Basic / standard implementation
+###Basic new byte[] implementation
 
 ```java
 private void runBench()
