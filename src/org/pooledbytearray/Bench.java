@@ -1,8 +1,12 @@
 package org.pooledbytearray;
 
+/****
+ Implementation switch
+****/
 //import org.pooledbytearray.weakref.*;
 import org.pooledbytearray.dumbring.*;
 //import org.pooledbytearray.finalizer.*;
+/****/
 
 import java.util.HashMap;
 import java.util.Map;
