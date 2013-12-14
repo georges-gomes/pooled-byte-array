@@ -1,4 +1,4 @@
-package org.pooledbytearray.ring;
+package org.pooledbytearray.dumbring;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;

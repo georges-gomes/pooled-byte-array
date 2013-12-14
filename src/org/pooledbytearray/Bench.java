@@ -1,7 +1,7 @@
 package org.pooledbytearray;
 
 //import org.pooledbytearray.weakref.*;
-import org.pooledbytearray.ring.*;
+import org.pooledbytearray.dumbring.*;
 //import org.pooledbytearray.finalizer.*;
 
 import java.util.HashMap;
