@@ -147,7 +147,7 @@ time = 1038956us
 ```
 
 
-###PooledByteArray with preallocation of 10 000 buffers
+###PooledByteArray with Finalizer implementation (10000 prealloc)
 
 ```java
 private void runBench()
