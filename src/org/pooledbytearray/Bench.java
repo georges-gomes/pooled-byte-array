@@ -1,7 +1,8 @@
 package org.pooledbytearray;
 
-import org.pooledbytearray.finalizer.PooledByteArray;
-import org.pooledbytearray.finalizer.PooledByteArrayFactory;
+//import org.pooledbytearray.weakref.*;
+import org.pooledbytearray.ring.*;
+//import org.pooledbytearray.finalizer.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class Bench extends Thread
                 runBench();
             }
             long end = System.nanoTime();
-            System.out.println("time = " + ((end-start)/1000));
+            System.out.println("time = " + ((end-start)/1000000) + "ms");
         }
         catch(Exception e)
         {
@@ -82,7 +83,7 @@ public class Bench extends Thread
         int len = serialize(object, pb);
 
         // Consume young
-        byte[] tmp = new byte[1024];
+        byte[] tmp = new byte[8*1024];
         tmp[0] = 'a';
     }
 
